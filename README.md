@@ -8,4 +8,4 @@ leetcode practice, using Python 3
 
 | easy | medium | hard |
 |:---|:---|:---|
-|35|37|6|
+|36|38|6|
