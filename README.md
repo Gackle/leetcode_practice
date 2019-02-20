@@ -6,6 +6,6 @@ leetcode practice, using Python 3
 
 目前刷题情况
 
-| easy | medium | hard |
-|:---|:---|:---|
-|40|43|6|
+| easy | medium | hard | total |
+|:---|:---|:---|:---|
+|44|46|8|98|

@@ -34,12 +34,19 @@ class Solution:
         :type k: int
         :rtype: List[List[int]]
         """
-        pass
+        import heapq
+        import itertools
+        heap = itertools.product(nums1[:k], nums2[:k])
+        result = heapq.nsmallest(k, heap, key=lambda x: x[0]+x[1])
+        return list(map(lambda x: list(x), result))
 
 
 if __name__ == "__main__":
     s = Solution()
-    nums1 = [1, 2]
-    nums2 = [3]
-    k = 3
+    # nums1 = [1, 2]
+    nums1 = [1, 1, 2]
+    # nums2 = [3]
+    nums2 = [1, 2, 3]
+    # k = 3
+    k = 2
     print(s.kSmallestPairs(nums1, nums2, k))
