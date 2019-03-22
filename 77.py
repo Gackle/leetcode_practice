@@ -50,8 +50,18 @@ class Solution(object):
             self.dfs(i+1, n+1, k-1, temp)
 
 
+class SolutionFast(object):
+    def combine(self, n, k):
+        """
+        :type n: int
+        :type k: int
+        :rtype: List[List[int]]
+        """
+        import itertools
+        return itertools.combinations(range(1, n+1), k)
+
 if __name__ == "__main__":
-    s = Solution()
+    s = SolutionFast()
     n = 4
     k = 2
     print(s.combine(n, k))
