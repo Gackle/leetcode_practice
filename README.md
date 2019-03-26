@@ -8,7 +8,7 @@ leetcode practice, using Python 3
 
 | easy | medium | hard | total |
 |:---|:---|:---|:---|
-|37|54|8|100|
+|37|54|8|99|
 
 下面还有一些其他算法的文件夹
 
