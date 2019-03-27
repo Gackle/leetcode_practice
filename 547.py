@@ -44,29 +44,30 @@ class Solution(object):
         if not M or M == []:
             return 0
         N = len(M)
-        self.parents = [i for i in range(N)]
+        parents = [i for i in range(N)]
+
+        def find(x):
+            # 查找父节点，对于并查集来说，只有根节点其父节点等于其本身
+            while parents[x] != x:
+                x = parents[x]
+            return x
+
+        def join(x, y):
+            parent_x = find(x)
+            parent_y = find(y)
+            if parent_x != parent_y:
+                # 联通的节点如果父节点不一样，将其中一个的父节点改为另一个的父节点
+                parents[parent_y] = parent_x
+
         for i in range(N):
             for j in range(N):
                 if M[i][j] == 1:
-                    self.join(i, j)
+                    join(i, j)
         count = dict()
         for i in range(N):
-            value = self.find(i)
+            value = find(i)
             count[value] = count.get(value, 0) + 1
         return len(count.keys())
-
-    def join(self, x, y):
-        parent_x = self.find(x)
-        parent_y = self.find(y)
-        if parent_x != parent_y:
-            # 联通的节点如果父节点不一样，将其中一个的父节点改为另一个的父节点
-            self.parents[parent_y] = parent_x
-
-    def find(self, x):
-        # 查找父节点，对于并查集来说，只有根节点其父节点等于其本身
-        while self.parents[x] != x:
-            x = self.parents[x]
-        return x
 
 
 class Solution2(object):
@@ -78,29 +79,63 @@ class Solution2(object):
         """
         if not M or M == []:
             return 0
-        self.N = len(M)
-        self.visited = [0 for i in range(self.N)]
-        self.count = len(M)
-        for i in range(self.N):
-            self.visited[i] = 1
-            self.dfs(i, M)
-        return self.count
 
-    def dfs(self, i, M):
-        for j in range(self.N):
-            if M[i][j] == 0 or i == j:
-                continue
-            else:
-                if self.visited[j] == 1:
+        N = len(M)
+        visited = set()
+        count = N
+
+        def dfs(i, count):
+            for j in range(N):
+                if M[i][j] == 0 or i == j:
                     continue
                 else:
-                    self.count -= 1
-                    self.visited[j] = 1
-                    self.dfs(j, M)
+                    if j in visited:
+                        continue
+                    else:
+                        count -= 1
+                        visited.add(j)
+                        count = dfs(j, count)
+            return count
+
+        for k in range(N):
+            visited.add(k)
+            count = dfs(k, count)
+        return count
+
+
+class Solution3(object):
+    # 广度优先搜索解法
+    def findCircleNum(self, M):
+        """
+        :type M: List[List[int]]
+        :rtype: int
+        """
+        if not M or M == []:
+            return 0
+        N = len(M)
+        visited = set()
+        count = N
+
+        def bfs(n, count):
+            q = [n]
+            while q:
+                n = q.pop()
+                for x in range(N):
+                    if M[n][x] and x not in visited:
+                        count -= 1
+                        visited.add(x)
+                        q.append(x)
+            return count
+
+        for i in range(N):
+            visited.add(i)
+            count = bfs(i, count)
+
+        return count
 
 
 if __name__ == "__main__":
-    s = Solution2()
+    s = Solution()
     M = [[1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
          [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
