@@ -35,17 +35,103 @@ N 在[1, 200]的范围内。
 
 
 class Solution(object):
+    # 并查集解法
     def findCircleNum(self, M):
         """
         :type M: List[List[int]]
         :rtype: int
         """
-        pass
+        if not M or M == []:
+            return 0
+        N = len(M)
+        self.parents = [i for i in range(N)]
+        for i in range(N):
+            for j in range(N):
+                if M[i][j] == 1:
+                    self.join(i, j)
+        count = dict()
+        for i in range(N):
+            value = self.find(i)
+            count[value] = count.get(value, 0) + 1
+        return len(count.keys())
+
+    def join(self, x, y):
+        parent_x = self.find(x)
+        parent_y = self.find(y)
+        if parent_x != parent_y:
+            # 联通的节点如果父节点不一样，将其中一个的父节点改为另一个的父节点
+            self.parents[parent_y] = parent_x
+
+    def find(self, x):
+        # 查找父节点，对于并查集来说，只有根节点其父节点等于其本身
+        while self.parents[x] != x:
+            x = self.parents[x]
+        return x
+
+
+class Solution2(object):
+    # 深度优先搜索解法
+    def findCircleNum(self, M):
+        """
+        :type M: List[List[int]]
+        :rtype: int
+        """
+        if not M or M == []:
+            return 0
+        self.N = len(M)
+        self.visited = [0 for i in range(self.N)]
+        self.count = len(M)
+        for i in range(self.N):
+            self.visited[i] = 1
+            self.dfs(i, M)
+        return self.count
+
+    def dfs(self, i, M):
+        for j in range(self.N):
+            if M[i][j] == 0 or i == j:
+                continue
+            else:
+                if self.visited[j] == 1:
+                    continue
+                else:
+                    self.count -= 1
+                    self.visited[j] = 1
+                    self.dfs(j, M)
 
 
 if __name__ == "__main__":
-    s = Solution()
-    M = [[1, 1, 0],
-         [1, 1, 1],
-         [0, 1, 1]]
+    s = Solution2()
+    M = [[1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+         [0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+         [0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0],
+         [1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0],
+         [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1],
+         [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+         [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]]
+    # M = [[1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #      [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    #      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #      [0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+    #      [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    #      [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #      [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    #      [0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+    #      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    #      [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+    #      [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    #      [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    #      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]]
+    # M = [[1, 1, 0],
+    #      [1, 1, 0],
+    #      [0, 0, 1]]
     print(s.findCircleNum(M))
