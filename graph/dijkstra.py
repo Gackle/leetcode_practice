@@ -26,7 +26,32 @@ def dijkstra_for_matrix(M, source, target):
     :type M: List[List[int]]
     :rtype: int
     """
-    pass
+    N = len(M[0])
+    # 已访问列表
+    visited = [source]
+    # source 为原点的距离表
+    dis = [MAXINT] * N
+    dis[source] = 0
+    # source 为原点的路径表
+    path = [""] * N
+    path[source] = str(source)
+    # BEGIN 具体算法
+    cur = source
+    while len(visited) < N:
+        min_value = MAXINT
+        for index, node in enumerate(M[cur]):
+            if index not in visited:
+                if dis[index] > dis[cur] + node:
+                    dis[index] = dis[cur] + node
+                    path[index] = path[cur] + str(index)
+        # 找出这一轮的最小点
+        for index, node in enumerate(dis):
+            if index not in visited and node <= min_value:
+                min_value = node
+                cur = index
+        visited.append(cur)
+    return dis[target]
+    
 
 
 def dijkstra_for_dict(vertical, edges, source, target):
@@ -83,5 +108,5 @@ if __name__ == '__main__':
         "E": {"C": 4, "D": 2, "F": 5},
         "F": {"D": 3, "E": 5}
     }
-    # print(dijkstra_for_matrix(matrix, 0, 4))
-    print(dijkstra_for_dict(vertical, edges, "A", "F"))
+    print(dijkstra_for_matrix(matrix, 1, 5))
+    print(dijkstra_for_dict(vertical, edges, "B", "F"))

@@ -5,21 +5,49 @@
   floyd 本质上是动态规划的一种实现，适合正权边和负权边的有向图或无向图（不适用于负权环），稠密图效果最佳
   通过在任意两点之间添加新的中转点使得两点间的路程缩短
 时间复杂度:
-  O(n^3)
+  O(n^3) —— 因为是三重循环
 空间复杂度:
   O(n^2)
 """
-
+from sys import maxsize as MAXINT
 
 def floyd_for_matrix(matrix, begin, end):
+    """ 基于邻接矩阵
+    :type matrix: List[List[int]]
+    :type begin: int
+    :type end: int
+    :rtype: int
+    """
     path = matrix[:]
-    
+    N = len(matrix[0])
+    for k in range(N):
+      for i in range(N):
+        for j in range(N):
+          path[i][j] = min(path[i][j], path[i][k] + path[k][j])
+    return path[begin][end]
 
 
 def floyd_for_dict(vertical, edges, source, target):
-    # 二维动态规划矩阵（空间复杂度 O(n^2)）
-    pass
-
+    """ 基于邻接表
+    :type vertical: List[int]
+    :type edges: dict
+    :type source: str
+    :type target: str
+    """
+    # BEGIN 构建二维矩阵
+    N = len(vertical)
+    path = [[MAXINT]*N for i in range(N)]
+    begin = vertical.index(source)
+    end = vertical.index(target)
+    for v in edges:
+      for vn in edges[v]:
+        path[vertical.index(v)][vertical.index(vn)] = edges[v][vn]
+    # END 構建二維矩陣
+    for k in range(N):
+      for i in range(N):
+        for j in range(N):
+          path[i][j] = min(path[i][j], path[i][k] + path[k][j])
+    return path[begin][end]
 
 if __name__ == "__main__":
     matrix = [
