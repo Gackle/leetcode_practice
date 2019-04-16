@@ -11,6 +11,7 @@
 """
 from sys import maxsize as MAXINT
 
+
 def floyd_for_matrix(matrix, begin, end):
     """ 基于邻接矩阵
     :type matrix: List[List[int]]
@@ -21,9 +22,9 @@ def floyd_for_matrix(matrix, begin, end):
     path = matrix[:]
     N = len(matrix[0])
     for k in range(N):
-      for i in range(N):
-        for j in range(N):
-          path[i][j] = min(path[i][j], path[i][k] + path[k][j])
+        for i in range(N):
+            for j in range(N):
+                path[i][j] = min(path[i][j], path[i][k] + path[k][j])
     return path[begin][end]
 
 
@@ -40,14 +41,15 @@ def floyd_for_dict(vertical, edges, source, target):
     begin = vertical.index(source)
     end = vertical.index(target)
     for v in edges:
-      for vn in edges[v]:
-        path[vertical.index(v)][vertical.index(vn)] = edges[v][vn]
+        for vn in edges[v]:
+            path[vertical.index(v)][vertical.index(vn)] = edges[v][vn]
     # END 構建二維矩陣
     for k in range(N):
-      for i in range(N):
-        for j in range(N):
-          path[i][j] = min(path[i][j], path[i][k] + path[k][j])
+        for i in range(N):
+            for j in range(N):
+                path[i][j] = min(path[i][j], path[i][k] + path[k][j])
     return path[begin][end]
+
 
 if __name__ == "__main__":
     matrix = [
