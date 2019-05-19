@@ -3,27 +3,51 @@
 '''
 
 
-def quick_sort(l):
+def quick_sort(l, reverse=False):
     '''
     :type l: List[int]
+    :type reverse: bool
     :rtype: List[int]
     '''
-    if len(l) == 0 or len(l) == 1:
-        return l
-    elif len(l) == 2:
-        if l[0] > l[1]:
-            return [l[1], l[0]]
-        else:
-            return [l[0], l[1]]
-    elif len(l) > 2:
+    def little_quick_sort(entries: list) -> list:
+        if len(entries) < 2:
+            return entries
+        elif len(entries) == 2:
+            if entries[0] > entries[1]:
+                entries.reverse()
+            return entries
         left = []
         right = []
-        for i in l[1:]:
-            if i > l[0]:
+        mid = [entries[0]]
+        for i in entries[1:]:
+            if i > entries[0]:
                 right.append(i)
-            else:
+            elif i < entries[0]:
                 left.append(i)
-        return quick_sort(left) + [l[0]] + quick_sort(right)
+            else:
+                mid.append(i)
+        return little_quick_sort(left) + mid + little_quick_sort(right)
+
+    def great_quick_sort(entries: list) -> list:
+        if len(entries) < 2:
+            return entries
+        elif len(entries) == 2:
+            if entries[0] < entries[1]:
+                entries.reverse()
+            return entries
+        left = []
+        right = []
+        mid = [entries[0]]
+        for i in entries[1:]:
+            if i < entries[0]:
+                right.append(i)
+            elif i > entries[0]:
+                left.append(i)
+            else:
+                mid.append(i)
+        return little_quick_sort(left) + mid + little_quick_sort(right)
+
+    return great_quick_sort(l) if reverse else little_quick_sort(l)
 
 
 if __name__ == "__main__":
