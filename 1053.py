@@ -60,5 +60,6 @@ class Solution(object):
 if __name__ == "__main__":
     s = Solution()
     A = [1, 9, 4, 6, 7]
+    A = [9, 6, 5, 7]
     # A = [3, 1, 1, 3]
     print(s.prevPermOpt1(A))
