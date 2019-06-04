@@ -34,7 +34,7 @@ class Solution(object):
         for i in A:
             number += str(i)
             d_number = int(number, 2)
-            result.append(d_number%5==0)
+            result.append(d_number % 5 == 0)
         return result
 
 
