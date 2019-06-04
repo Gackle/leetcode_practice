@@ -38,9 +38,9 @@ key = 3
    \   \
     4   7
 
-思路：
+思路：(果然题目越长越简单)
 二叉搜索树的性质
-果然题目越长越简单
+当找到对应节点的时候，如果左右根有一个为叶节点，则直接补上去；否则，补上右子树的最左节点
 """
 
 # Definition for a binary tree node.
@@ -49,7 +49,7 @@ key = 3
 #         self.val = x
 #         self.left = None
 #         self.right = None
-from tree_util import initialTree, TreeNode
+from tree_util import initial_tree, TreeNode
 
 
 class Solution:
@@ -57,46 +57,42 @@ class Solution:
         if not root:
             return None
 
-        def search(parent: TreeNode, node: TreeNode, target: int):
-            if node.val == target:
-                return (parent, node)
-            if not node.left and not node.right:
-                return (parent, None)
-            if node.val > target:
-                return search(node, node.left, target) if node.left else (parent, None)
-            if node.val < target:
-                return search(node, node.right, target) if node.right else (parent, None)
-
-        tree_parent = TreeNode(-1)
-        tree_parent.right = root
-        target_parent, target_node = search(tree_parent, root, key)
-        if target_node == root:
-            p = root.right
+        def merge(node: TreeNode):
+            if not node.right:
+                return node.left
+            p = node.right
             while p.left:
                 p = p.left
-            p.left = root.left
-            return root.right
-        if target_node:
-            # 找到了
-            if target_parent.left == target_node:
-                target_parent.left = target_node.left
-                p = target_node.left
-                while p.right:
-                    p = p.right
-                p.right = target_node.right
-            else:
-                target_parent.right = target_node.right
-                p = target_node.left
-                while p.left:
-                    p = p.left
-                p.left = target_node.left
-        return root
+            p.left = node.left
+            return node.right
 
+        def search(node: TreeNode, parent: TreeNode, t: int, root: TreeNode):
+            if node.val == key:
+                # merge
+                ne = merge(node)
+                if node == root:
+                    root = ne
+                else:
+                    if t == 1:
+                        parent.left = ne
+                    else:
+                        parent.right = ne
+            elif not node.left and not node.right:
+                return root
+            elif node.val < key and node.right:
+                return search(node.right, node, 2, root)
+            elif node.val > key and node.left:
+                return search(node.left, node, 1, root)
+            return root
+
+        root = search(root, None, 0, root)
+        return root
 
 if __name__ == "__main__":
     s = Solution()
     root = [5, 3, 6, 2, 4, None, 7]
-    root = [3]
-    root = initialTree(root)
+    # root = []
+    # root = [3]
+    root = initial_tree(root)
     key = 3
     print(s.deleteNode(root, key))
