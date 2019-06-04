@@ -88,11 +88,60 @@ class Solution:
         root = search(root, None, 0, root)
         return root
 
+
+class Solution2:
+    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+        if not root:
+            return None
+
+        # 查找
+        node = root
+        op = None
+        parent = None
+        while node:
+            if node.val > key:
+                parent = node
+                op = 'left'
+                node = node.left if node.left else None
+            elif node.val < key:
+                parent = node
+                op = 'right'
+                node = node.right if node.right else None
+            else:
+                # 目标节点左右子树都没有
+                # if not node.left and not node.right:
+                    # node = None
+                # 没有右子树
+                if not node.right:
+                    if not op:
+                        root = node.left
+                    elif op == 'left':
+                        parent.left = node.left
+                    else:
+                        parent.right = node.left
+                else:
+                    p = node.right
+                    while p.left:
+                        p = p.left
+                    p.left = node.left
+                    if not op:
+                        root = node.right
+                    else:
+                        if op == 'left':
+                            parent.left = node.right
+                        else:
+                            parent.right = node.right
+                node = None
+        return root
+
+
 if __name__ == "__main__":
-    s = Solution()
+    s = Solution2()
     root = [5, 3, 6, 2, 4, None, 7]
     # root = []
     # root = [3]
+    root = [1, None, 2]
     root = initial_tree(root)
     key = 3
+    key = 2
     print(s.deleteNode(root, key))

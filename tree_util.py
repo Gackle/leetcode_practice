@@ -27,3 +27,13 @@ def buildTree(parent: TreeNode, i: int, li: list) -> TreeNode:
     else:
         parent.right = None
     return parent
+
+
+def initial_tree(l):
+    d = {i: TreeNode(v) for i, v in enumerate(l) if v}
+    for i, v in enumerate(l):
+        if not v:
+            continue
+        d[i].left = d.get(2*i+1, None)
+        d[i].right = d.get(2*i+2, None)
+    return d[0] if d else None
