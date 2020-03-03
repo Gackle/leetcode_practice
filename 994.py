@@ -117,8 +117,34 @@ class Solution2:
         return False
 
 
+class Solution3:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        import collections
+        R, C = len(grid), len(grid[0])
+        queque = collections.deque()
+        for r in range(R):
+            for c in range(C):
+                if grid[r][c] == 2:
+                    queque.append((r, c, 0))
+
+        def nextoranges(r, c):
+            for nr, nc in ((r+1, c), (r-1, c), (r, c+1), (r, c-1)):
+                if 0 <= nr < R and 0 <= nc < C:
+                    yield nr, nc
+        d = 0
+        while queque:
+            r, c, d = queque.popleft()
+            for nr, nc in nextoranges(r, c):
+                if grid[nr][nc] == 1:
+                    grid[nr][nc] = 2
+                    queque.append((nr, nc, d+1))
+        if any(1 in row for row in grid):
+            return -1
+        return d
+
+
 if __name__ == "__main__":
-    s = Solution2()
+    s = Solution3()
     # grid = [[2, 1, 1], [1, 1, 0], [0, 1, 1]]  # 4
     # grid = [[1]]  # -1
     # grid = [[0, 2]]  # 0
