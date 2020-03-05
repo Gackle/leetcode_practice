@@ -1,48 +1,44 @@
 # coding: utf-8
-""" 1103. 二叉树寻路
-
-在一棵无限的二叉树上，每个节点都有两个子节点，树中的节点 逐行 依次按 “之” 字形进行标记。
-如下图所示，在奇数行（即，第一行、第三行、第五行……）中，按从左到右的顺序进行标记；
-而偶数行（即，第二行、第四行、第六行……）中，按从右到左的顺序进行标记。
-
-给你树上某一个节点的标号 label，请你返回从根节点到该标号为 label 节点的路径，该路径是由途经的节点标号所组成的。
-
- 
+""" 1103. 分糖果
+排排坐，分糖果。
+我们买了一些糖果 candies，打算把它们分给排好队的 n = num_people 个小朋友。
+给第一个小朋友 1 颗糖果，第二个小朋友 2 颗，依此类推，直到给最后一个小朋友 n 颗糖果。
+然后，我们再回到队伍的起点，给第一个小朋友 n + 1 颗糖果，第二个小朋友 n + 2 颗，依此类推，直到给最后一个小朋友 2 * n 颗糖果。
+重复上述过程（每次都比上一次多给出一颗糖果，当到达队伍终点后再次从队伍起点开始），直到我们分完所有的糖果。注意，就算我们手中的剩下糖果数不够（不比前一次发出的糖果多），这些糖果也会全部发给当前的小朋友。
+返回一个长度为 num_people、元素之和为 candies 的数组，以表示糖果的最终分发情况（即 ans[i] 表示第 i 个小朋友分到的糖果数）。
 
 示例 1：
-输入：label = 14
-输出：[1,3,4,14]
+输入：candies = 7, num_people = 4
+输出：[1,2,3,1]
 
 示例 2：
-输入：label = 26
-输出：[1,2,6,10,26]
+输入：candies = 10, num_people = 3
+输出：[5,2,3]
 """
 
 
 class Solution(object):
-    def pathInZigZagTree(self, label):
+    def distributeCandies(self, candies, num_people):
         """
-        :type label: int
+        :type candies: int
+        :type num_people: int
         :rtype: List[int]
         """
-        result = []
-        # 判断lable的行
-        n = 1
-        while label >= 2**n:
-            n += 1
-        cur = label
-        result.append(cur)
-        index = 2**n-1-label if not n % 2 else label-2**(n-1)
-        n -= 1
-        while n > 0:
-            index = index // 2
-            cur = 2**(n-1)+index if n % 2 else 2**n-1-index
-            result.append(cur)
-            n -= 1
-        return result[::-1]
+        i = 0
+        round = -1
+        result = [0] * num_people
+        while candies > 0:
+            if i == 0:
+                round += 1
+            dispatch = round * num_people + i + 1
+            result[i] += dispatch if dispatch < candies else candies
+            i = (i+1) % num_people
+            candies -= dispatch
+        return result
 
 
 if __name__ == '__main__':
     s = Solution()
-    label = 16
-    print(s.pathInZigZagTree(label))
+    candies = 7
+    num_people = 4
+    print(s.distributeCandies(candies, num_people))
