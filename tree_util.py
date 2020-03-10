@@ -4,6 +4,9 @@ class TreeNode:
         self.left = None
         self.right = None
 
+    def __repr__(self):
+        return f"({self.val}, [{self.left}, {self.right}])"
+
 
 def initialTree(li):
     '''
@@ -30,10 +33,23 @@ def buildTree(parent: TreeNode, i: int, li: list) -> TreeNode:
 
 
 def initial_tree(l):
-    d = {i: TreeNode(v) for i, v in enumerate(l) if v}
-    for i, v in enumerate(l):
-        if not v:
-            continue
-        d[i].left = d.get(2*i+1, None)
-        d[i].right = d.get(2*i+2, None)
-    return d[0] if d else None
+    d = {i: TreeNode(v) for i, v in enumerate(l) if v is not None}
+    if not d:
+        return None
+    point = 1  # 当前处理节点
+    queue = [(d[0], 0)]  # 上一层节点数
+    while point < len(l):
+        node, layout = queue.pop(0)
+        if l[point] is not None:
+            node.left = d[point]
+            queue.append((d[point], layout + 1))
+        if point + 1 < len(l) and l[point + 1] is not None:
+            node.right = d[point+1]
+            queue.append((d[point+1], layout))
+        point += 2
+    return d[0]
+
+
+if __name__ == "__main__":
+    l = [1, None, 3, 1, 2, 3]
+    print(initial_tree(l))
