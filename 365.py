@@ -48,7 +48,7 @@ class Solution:
 
 if __name__ == "__main__":
     s = Solution()
-    x = 3
-    y = 5
-    z = 4
+    x = 2
+    y = 6
+    z = 5
     print(s.canMeasureWater(x, y, z))
