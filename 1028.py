@@ -25,27 +25,18 @@
 #         self.left = None
 #         self.right = None
 from tree_util import TreeNode, output_tree
+import re
 
 
 class Solution:
     def recoverFromPreorder(self, S: str) -> TreeNode:
-        if S == "":
-            return None
-        depth = 0
-        stack = []
-        i = 0
-        num = ""
-        while i < len(S):
-            if S[i] != "-":
-                num += S[i]
-            else:
-                if num:
-                    stack.append((depth, TreeNode(int(num))))
-                    depth = 0
-                    num = ""
-                depth += 1
-            i += 1
-        stack.append((depth, TreeNode(int(num))))
+        i = S.find('-')
+        if i == -1:
+            return TreeNode(int(S)) if S else None
+        stack = [(0, TreeNode(int(S[:i])))]
+        for depth_str, num_str in re.findall(r'(\-+)(\d+)', S):
+            stack.append((len(depth_str), TreeNode(int(num_str))))
+
         # 全部入栈之后，出栈
         right_stack = []
         while len(stack) > 1:
@@ -67,9 +58,11 @@ if __name__ == "__main__":
     null = 'null'
     s = Solution()
     S = "1-2--3--4-5--6--7"
-    assert output_tree(s.recoverFromPreorder(S)) == [1, 2, 5, 3, 4, 6, 7], output_tree(s.recoverFromPreorder(S))
+    assert output_tree(s.recoverFromPreorder(S)) == [
+        1, 2, 5, 3, 4, 6, 7], output_tree(s.recoverFromPreorder(S))
     S = "1-2--3---4-5--6---7"
     assert output_tree(s.recoverFromPreorder(S)) == [
         1, 2, 5, 3, null, 6, null, 4, null, 7], output_tree(s.recoverFromPreorder(S))
     S = "1-401--349---90--88"
-    assert output_tree(s.recoverFromPreorder(S)) == [1, 401, 'null', 349, 88, 90], output_tree(s.recoverFromPreorder(S))
+    assert output_tree(s.recoverFromPreorder(S)) == [
+        1, 401, 'null', 349, 88, 90], output_tree(s.recoverFromPreorder(S))
