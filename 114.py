@@ -23,7 +23,7 @@
          \
           6
 """
-from tree_util import TreeNode, initialTree
+from tree_util import TreeNode, initial_tree
 
 
 class Solution:
@@ -73,6 +73,6 @@ class Solution:
 if __name__ == "__main__":
     # l = [1, 2, 5, 3, 4, None, 6]
     l = [1, 2, 3]
-    root = initialTree(l)
+    root = initial_tree(l)
     s = Solution()
     s.flatten(root)

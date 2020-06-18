@@ -18,7 +18,7 @@
 结点的坡度 1 : |2-3| = 1
 树的坡度 : 0 + 0 + 1 = 1
 """
-from tree_util import initialTree
+from tree_util import initial_tree
 
 
 class Solution:
@@ -50,6 +50,6 @@ class Solution:
 if __name__ == '__main__':
     # l = [-8, 3, 0, -8, None, None, None, None, -1, None, 8]
     l = [1, 2, 3]
-    tree = initialTree(l)
+    tree = initial_tree(l)
     s = Solution()
     print(s.findTilt(tree))

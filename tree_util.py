@@ -8,48 +8,68 @@ class TreeNode:
         return f"({self.val}, [{self.left}, {self.right}])"
 
 
-def initialTree(li):
-    '''
-    :type li: List[int]
-    '''
-    if not li:
+def initial_tree(l: list) -> TreeNode:
+    parent_stack = []
+    branch = 1  # 下一个添加的为左节点
+    child = 1
+    if len(l) < 1:
         return None
-    root = buildTree(TreeNode(li[0]), 0, li)
+    root = TreeNode(l[0])
+    pos = root
+    while child < len(l):
+        branch = (branch + 1) % 2
+        if l[child] is not None:
+            node = TreeNode(l[child])
+            parent_stack.append(node)
+        else:
+            node = None
+        if branch == 0:
+            pos.left = node
+        else:
+            pos.right = node
+            pos = parent_stack.pop(0)
+        child += 1
+
     return root
 
 
-def buildTree(parent: TreeNode, i: int, li: list) -> TreeNode:
-    left = 2 * i + 1 if i > 0 and li[i - 1] is not None or i == 0 else i + 1
-    right = 2 * i + 2 if i > 0 and li[i - 1] is not None or i == 0 else i + 2
-    if left < len(li) and li[left] is not None:
-        parent.left = buildTree(TreeNode(li[left]), left, li)
-    else:
-        parent.left = None
-    if right < len(li) and li[right] is not None:
-        parent.right = buildTree(TreeNode(li[right]), right, li)
-    else:
-        parent.right = None
-    return parent
+def output_tree(root: TreeNode) -> list:
+    # 遍历 TreeNode
+    node_set = []
+    total = 0
 
+    def dfs(node: TreeNode, index: int):
+        nonlocal total
+        if node is None:
+            return
+        node_set.append((index, node.val))
+        total = max(index, total)
+        if node.left:
+            dfs(node.left, 2*index+1)
+        if node.right:
+            dfs(node.right, 2*index+2)
 
-def initial_tree(l):
-    d = {i: TreeNode(v) for i, v in enumerate(l) if v is not None}
-    if not d:
-        return None
-    point = 1  # 当前处理节点
-    queue = [(d[0], 0)]  # 上一层节点数
-    while point < len(l):
-        node, layout = queue.pop(0)
-        if l[point] is not None:
-            node.left = d[point]
-            queue.append((d[point], layout + 1))
-        if point + 1 < len(l) and l[point + 1] is not None:
-            node.right = d[point+1]
-            queue.append((d[point+1], layout))
-        point += 2
-    return d[0]
+    dfs(root, 0)
+    result = ['null'] * (total + 1)
+    for item in node_set:
+        index = item[0]
+        value = item[1]
+        result[index] = value
+
+    # 倒叙剪除多于的 null
+    i = total
+    while i >= 2:
+        parent = (i - 1)//2 if i % 2 else i//2-1
+        if parent >= 0 and result[i] == 'null' and result[parent] == 'null':
+            del result[i]
+        i -= 1
+
+    return result
 
 
 if __name__ == "__main__":
     l = [1, None, 3, 1, 2, 3]
+    # l = [3, 9, 20, None, None, 15, 7]
+    # l = [1, 401, None, 349, 88, 90]
     print(initial_tree(l))
+    print(output_tree(initial_tree(l)))

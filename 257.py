@@ -19,7 +19,7 @@
 解释: 所有根节点到叶子节点的路径为: 1->2->5, 1->3
 """
 from typing import List
-from tree_util import initialTree, TreeNode
+from tree_util import initial_tree, TreeNode
 
 
 class Solution:
@@ -48,5 +48,5 @@ if __name__ == "__main__":
     s = Solution()
     # l = [1, 2, 3, None, 5]
     l = [1]
-    root = initialTree(l)
+    root = initial_tree(l)
     print(s.binaryTreePaths(root))

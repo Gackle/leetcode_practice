@@ -66,10 +66,10 @@ class Solution:
 if __name__ == "__main__":
     null = 'null'
     s = Solution()
-    # S = "1-2--3--4-5--6--7"
-    # assert output_tree(s.recoverFromPreorder(S)) == [1, 2, 5, 3, 4, 6, 7], output_tree(s.recoverFromPreorder(S))
-    # S = "1-2--3---4-5--6---7"
-    # assert output_tree(s.recoverFromPreorder(S)) == [
-    #     1, 2, 5, 3, null, 6, null, 4, null, 7], output_tree(s.recoverFromPreorder(S))
+    S = "1-2--3--4-5--6--7"
+    assert output_tree(s.recoverFromPreorder(S)) == [1, 2, 5, 3, 4, 6, 7], output_tree(s.recoverFromPreorder(S))
+    S = "1-2--3---4-5--6---7"
+    assert output_tree(s.recoverFromPreorder(S)) == [
+        1, 2, 5, 3, null, 6, null, 4, null, 7], output_tree(s.recoverFromPreorder(S))
     S = "1-401--349---90--88"
     assert output_tree(s.recoverFromPreorder(S)) == [1, 401, 'null', 349, 88, 90], output_tree(s.recoverFromPreorder(S))

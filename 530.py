@@ -23,7 +23,7 @@
 思路二：
 BST 的中序遍历为升序数组
 """
-from tree_util import TreeNode, initialTree
+from tree_util import TreeNode, initial_tree
 
 
 class Solution:
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     li = [236, 104, 701, None, 227, None, 911]
     # li = [1, None, 3, 2]
     # li = [0, None, 2236, 1277, 2776, 519]
-    root = initialTree(li)
+    root = initial_tree(li)
     # root = TreeNode(0)
     # root.right = TreeNode(2236)
     # root.right.left = TreeNode(1277)
